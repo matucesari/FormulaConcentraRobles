@@ -1,0 +1,16 @@
+solu;dia;radio;hora;temperatura
+Malt50Iso50;lunes;exterior;3;40
+Sac50Iso50;martes;exterior;3;40
+Sac100;miercoles;exterior;3;40
+Malt50Iso50;jueves;exterior;3;40
+Sac50Iso50;viernes;exterior;3;40
+Sac50Malt50;lunes;intermedio;3;40
+Sac50Iso50;martes;intermedio;3;40
+Sac100;miercoles;intermedio;3;40
+Sac50Malt50;jueves;intermedio;3;40
+Sac100;viernes;intermedio;3;40
+Sac50Iso50;lunes;central;3;40
+Malt50Iso50;martes;central;3;40
+Sac100;miercoles;central;3;40
+Malt50Iso50;jueves;central;3;40
+Sac50Malt50;viernes;central;3;40
