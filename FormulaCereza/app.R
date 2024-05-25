@@ -13,7 +13,6 @@ header <- dashboardHeader(title="Noelia Robles")
 
 # Barra lateral que incluye título del proyecto y botón de salida
 sidebar <- dashboardSidebar(
-  h3("Predicción de la Concentración en el Proceso de Inmersión de Cerezas"),
   actionButton("exit_btn", "Salir") 
 )
 
@@ -31,14 +30,24 @@ body <- dashboardBody(
         "))
   ),
   tabsetPanel(
+    h2("Predicción de la Concentración de Solutos en Cerezas en el Proceso de Deshidratado Osmótico"),
     tabPanel("Predicción Manual", 
       sidebarLayout(
           sidebarPanel(
-            selectInput("solu", "Solución:", choices = c("Sac100", "Sac50Iso50","Malt50Iso50","Sac50Malt50")), 
-            selectInput("dia", "Día de la semana en Inmersión:", choices = c("lunes", "martes", "miercoles", "jueves", "viernes")),     
-            selectInput("radio", "Posición de inmersión:", choices = c("exterior", "intermedio", "central")),  
+            selectInput("solu", "Solución Osmodeshidratante:", choices = c("Sac100", "Sac50Malt50", "Sac50Iso50","Malt50Iso50")), 
+            h6(" Sacarosa al 100% (Sac100)" ),
+            h6(" 50% de sacarosa - 50% de maltitol (Sac50Malt50)" ),
+            h6(" 50% de sacarosa - 50% de isomaltitol (Sac50Iso50)" ),
+            h6(" 50% de maltitol - 50% de isomaltitol (Malt50Iso50)" ),
+            selectInput("dia", "Día de la semana, en Inmersión:", choices = c("lunes", "martes", "miercoles", "jueves", "viernes")),     
+            selectInput("radio", "Radio Medido de Cereza:", choices = c("exterior", "intermedio", "central")),  
+            h6("  Distancia desde el centro de la cereza:"),
+            h6("  exterior -> 2,07cm" ),
+            h6("  intermedio -> 0,73cm" ),
+            h6("  central -> 0,12cm" ),
             numericInput("hora", "Período de tiempo trascurrido desde la Inmersión (en el día):", min = 0.25, value = 0.25, max = 6),
-            numericInput("temperatura", "Temperatura en grado centígrados de la solución:", min = 0, value = 40),
+            h6("  Tiempo medido en Fracción de Hora"),
+            numericInput("temperatura", "Temperatura de la solución (Grados Celsius):", min = 0, value = 40),
             actionButton("calcular", "Calcular Concentración")
           ),
           uiOutput("contenido_dinamico")
@@ -63,18 +72,18 @@ body <- dashboardBody(
                 ),
                 box(actionButton("btn_cargar", "Cargar y Calcular")),
                 box(width = 12,
-                  h5(" "), 
+                  h6(" "), 
                   h5("La tabla debe tener los siguientes nombres de columnas: "),
-                  h5("solu | dia | radio | hora | temperatura"),
-                  h5(" "), 
+                  h6("solu | dia | radio | hora | temperatura"),
+                  h6(" "), 
                   h5("La columna solu debe tener uno de las siguientes categorias: "),
-                  h5("Sac100 / Sac50Iso50 / Malt50Iso50 / Sac50Malt50"),
+                  h6("Sac100 / Sac50Iso50 / Malt50Iso50 / Sac50Malt50"),
                   h5("La columna dia debe tener uno de las siguientes categorias: "),
-                  h5("lunes / martes / miercoles / jueves / viernes"),
+                  h6("lunes / martes / miercoles / jueves / viernes"),
                   h5("La columna radio debe tener uno de las siguientes categorias: "),
-                  h5("exterior / intermedio / central"),
-                  h5("La columna hora es numerica y representa hora en decimal"),
-                  h5("La columna temperatura es numerica y representa temperatura en grado Celsius")
+                  h6("exterior / intermedio / central"),
+                  h5("La columna hora es numerica y representa fración de hora"),
+                  h5("La columna temperatura es numerica y representa temperatura en grados Celsius")
                 )
           ),
           uiOutput("resultados_carga")
@@ -135,7 +144,12 @@ server <- function(input, output) {
                                                  input$hora, 
                                                  input$temperatura), 1)
     output$resultado <- renderText({
-      paste(concentracion, "para radio", input$radio, " y ", input$solu)
+      paste(concentracion, " ºBrix,",
+                           " para el radio", input$radio, 
+                           ", del día", input$dia,
+                           ", de la hora", input$hora, 
+                           ", a ", input$temperatura, "ºC de temperatura",
+                           " y para la solución ", input$solu)
     })
     
     # Renderiza dinámicamente el contenido cuando se presione el botón
